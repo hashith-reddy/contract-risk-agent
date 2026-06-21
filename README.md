@@ -1,4 +1,4 @@
-# ⚖️ Contract Risk Analysis Agent
+#  Contract Risk Analysis Agent
 
 A retrieval-grounded legal AI system that analyzes contract clauses using semantic search, vector embeddings, explainable risk assessment, and evidence-based reasoning.
 
@@ -6,7 +6,7 @@ Built using the CUAD (Contract Understanding Atticus Dataset), Sentence Transfor
 
 ---
 
-## 🚀 Live Demo
+##  Live Demo
 
 **Hugging Face Deployment**
 
@@ -18,7 +18,7 @@ https://github.com/hashith-reddy/contract-risk-agent
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 Contract review is a time-consuming process that requires identifying critical legal clauses such as:
 
@@ -37,7 +37,7 @@ Every recommendation produced by the system is traceable to actual contract clau
 
 ---
 
-## 🏗 System Architecture
+##  System Architecture
 
 ```text
 Raw Contract Data
@@ -66,7 +66,7 @@ Gradio User Interface
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 ### Semantic Contract Search
 
@@ -104,7 +104,7 @@ Gradio User Interface
 
 ---
 
-## 📊 Dataset & Results
+##  Dataset & Results
 
 ### Dataset
 
@@ -130,7 +130,7 @@ Processing Results:
 
 ---
 
-## 🧠 Technology Stack
+##  Technology Stack
 
 ### AI / Machine Learning
 
@@ -163,7 +163,7 @@ Processing Results:
 
 ---
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```text
 contract-risk-agent/
@@ -195,7 +195,7 @@ contract-risk-agent/
 
 ---
 
-## 🔍 Example Analysis
+##  Example Analysis
 
 ### Input
 
@@ -219,7 +219,7 @@ Review assignment restrictions and ensure appropriate consent procedures are doc
 
 ---
 
-## 📈 Development Milestones
+##  Development Milestones
 
 * Phase 1 – CUAD Data Processing
 * Phase 2 – Contract Chunking Pipeline
@@ -233,7 +233,7 @@ Review assignment restrictions and ensure appropriate consent procedures are doc
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 * Hybrid Retrieval (BM25 + Embeddings)
 * Cross-Encoder Reranking
@@ -244,7 +244,7 @@ Review assignment restrictions and ensure appropriate consent procedures are doc
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Harshith Reddy**
 
@@ -256,6 +256,6 @@ Hyderabad, India
 
 ---
 
-## 📜 License
+##  License
 
 MIT License
