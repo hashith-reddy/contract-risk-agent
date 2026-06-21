@@ -68,22 +68,25 @@ def determine_risk_level(evidence: List[Dict]) -> str:
     if not evidence:
         return "LOW"
     
-    # Check for high-risk clause types
-    high_risk_types = ['Anti-Assignment', 'Termination', 'Governing Law']
-    medium_risk_types = ['Cap On Liability', 'Renewal Term', 'Indemnification']
+    # Calculate risk based on average similarity score and clause characteristics
+    # This approach is purely retrieval-grounded without hardcoded mappings
     
-    clause_types = [item['clause_type'] for item in evidence]
+    # Get all similarity scores
+    similarity_scores = [item['similarity_score'] for item in evidence]
     
-    # If we have high-risk clause types, return HIGH
-    if any(risk_type in clause_types for risk_type in high_risk_types):
+    # Calculate average similarity
+    avg_similarity = np.mean(similarity_scores)
+    
+    # Determine risk level based on similarity thresholds (more semantic similarity = higher potential risk)
+    if avg_similarity >= 0.75:
+        # High similarity suggests strong relevance to known risky clauses
         return "HIGH"
-    
-    # If we have medium-risk clause types, return MEDIUM  
-    if any(risk_type in clause_types for risk_type in medium_risk_types):
+    elif avg_similarity >= 0.60:
+        # Moderate similarity suggests moderate risk
         return "MEDIUM"
-    
-    # Default to LOW
-    return "LOW"
+    else:
+        # Low similarity suggests lower risk
+        return "LOW"
 
 def generate_risk_report(query: str, evidence: List[Dict]) -> str:
     """
