@@ -1,0 +1,58 @@
+{
+  "overall": {
+    "recall_at_1": 0.75,
+    "recall_at_3": 0.875,
+    "recall_at_5": 0.875,
+    "mrr": 0.8125
+  },
+  "per_clause_type": {
+    "Anti-Assignment": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "Cap On Liability": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "Renewal Term": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "Most Favored Nation": {
+      "recall_at_1": 0.0,
+      "recall_at_3": 0.0,
+      "recall_at_5": 0.0,
+      "mrr": 0.0
+    },
+    "Uncapped Liability": {
+      "recall_at_1": 0.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 0.5
+    },
+    "Termination For Convenience": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "Change Of Control": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    },
+    "Non-Compete": {
+      "recall_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 1.0
+    }
+  }
+}
