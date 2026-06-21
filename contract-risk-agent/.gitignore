@@ -1,24 +1,123 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
+# =========================
+
+# Python
+
+# =========================
+
+**pycache**/
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
-dist
-build
-*.egg-info
+# Virtual environments
 
-# Distribution / packaging
-.Python
-env/
-venv/
 .venv/
-pip-log.txt
-pip-delete-this-directory.txt
+venv/
+env/
+ENV/
 
-# Data directories
-data/
+# =========================
 
-# Environment variables
+# IDE / Editor
+
+# =========================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+
+# OS Files
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# Logs
+
+# =========================
+
+*.log
+
+# =========================
+
+# Dataset Files
+
+# =========================
+
+data/raw/
+data/raw/**
+cuad/
+*.zip
+*.7z
+*.rar
+
+# =========================
+
+# Generated Artifacts
+
+# =========================
+
+data/processed/*.parquet
+data/processed/*.csv
+eval/results/
+
+# Keep directory structure
+
+!data/processed/.gitkeep
+!eval/results/.gitkeep
+
+# =========================
+
+# Model Files
+
+# =========================
+
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+
+# =========================
+
+# Chroma / Vector DB
+
+# =========================
+
+chroma_db/
+vector_store/
+.faiss/
+*.faiss
+
+# =========================
+
+# Environment Variables
+
+# =========================
+
 .env
+.env.*
+
+# =========================
+
+# Jupyter
+
+# =========================
+
+.ipynb_checkpoints/
+
+# =========================
+
+# Build Artifacts
+
+# =========================
+
+build/
+dist/
+*.egg-info/
