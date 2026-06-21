@@ -48,6 +48,17 @@ python src/embeddings/generate_embeddings.py
 python src/retrieval/retrieve.py --query "What are the termination conditions?"
 ```
 
+## Features
+
+- Semantic search using sentence transformers
+- Configurable chunk size and overlap for text splitting
+- Efficient cosine similarity computation
+- Detailed result information including contract ID, clause type, and similarity score
+- Deterministic chunk IDs for reproducible results
+- Command-line interface for easy querying
+- Gradio UI for interactive analysis
+- Structured output with risk level, confidence, evidence, and recommendations
+
 ## File Structure
 
 ```
@@ -62,33 +73,21 @@ contract-risk-agent/
 ├── data/
 │   ├── raw/              # Raw contract data
 │   └── processed/        # Processed chunks, embeddings, and metadata
+├── app.py                # Gradio UI application
 ├── requirements.txt      # Project dependencies
 └── README.md             # This file
 ```
 
-## Key Features
-
-- Semantic search using sentence transformers
-- Configurable chunk size and overlap for text splitting
-- Efficient cosine similarity computation
-- Detailed result information including contract ID, clause type, and similarity score
-- Deterministic chunk IDs for reproducible results
-- Command-line interface for easy querying
-
 ## Dependencies
 
 The project requires the following Python packages (listed in `requirements.txt`):
-- anthropic
+- gradio
 - sentence-transformers
-- chromadb
+- numpy
 - pandas
-- pdfplumber
-- python-dotenv
-- pytest
-- rich
-- rapidfuzz
-- streamlit
-- pydantic
+- pyarrow
+- scikit-learn
+- langchain-text-splitters
 
 ## Model Information
 
@@ -97,7 +96,14 @@ The system uses the 'sentence-transformers/all-MiniLM-L6-v2' model for embedding
 ## Output Format
 
 When querying, the system returns:
-- Similarity score (0-1)
-- Contract ID
-- Clause type
-- Chunk text content
+- Risk Level (Low, Medium, High)
+- Confidence Score (0-1)
+- Confidence Level (Low, Medium, High)
+- Detected Clause Types
+- Retrieval Statistics 
+- Evidence with similarity scores and chunk details
+- Recommendations based on detected clauses
+
+## Deployment for Hugging Face Spaces
+
+This project is ready to be deployed on Hugging Face Spaces. For deployment instructions, see `README_HF.md`.

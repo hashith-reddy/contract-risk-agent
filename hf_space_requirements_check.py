@@ -31,10 +31,10 @@ def main():
     
     print("\n" + "="*50)
     if all_passed:
-        print("✅ ALL REQUIREMENTS PASSED - Ready for Hugging Face deployment")
+        print("[SUCCESS] ALL REQUIREMENTS PASSED - Ready for Hugging Face deployment")
         sys.exit(0)
     else:
-        print("❌ SOME REQUIREMENTS FAILED - Please fix the missing files")
+        print("[ERROR] SOME REQUIREMENTS FAILED - Please fix the missing files")
         sys.exit(1)
 
 if __name__ == "__main__":
