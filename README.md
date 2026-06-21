@@ -1,109 +1,149 @@
 # Contract Risk Analysis Agent
 
-This project implements a contract risk analysis system that uses semantic search to identify relevant contract clauses based on user queries. The system processes contracts, generates embeddings, and enables efficient retrieval of relevant contract information.
+Retrieval-grounded legal contract risk analysis system built using the CUAD (Contract Understanding Atticus Dataset), semantic embeddings, cosine similarity retrieval, explainability, and confidence scoring.
 
-## System Architecture
+## Live Demo
 
-The system consists of three main components:
+Hugging Face Space:
+https://harshithh-contract-risk-agent.hf.space
 
-1. **Data Preparation** (`src/data_prep/chunk_contracts.py`)
-   - Splits contract clauses into manageable text chunks
-   - Uses RecursiveCharacterTextSplitter for intelligent chunking
-   - Generates deterministic chunk IDs for consistency
+GitHub Repository:
+https://github.com/hashith-reddy/contract-risk-agent
 
-2. **Embeddings Generation** (`src/embeddings/generate_embeddings.py`)
-   - Uses sentence-transformers to create semantic embeddings
-   - Employs the 'all-MiniLM-L6-v2' model for efficient processing
-   - Stores embeddings and metadata in parquet files
+---
 
-3. **Retrieval Engine** (`src/retrieval/retrieve.py`)
-   - Implements cosine similarity search for relevant chunks
-   - Supports command-line queries with configurable results count
-   - Returns contract ID, clause type, and chunk text with similarity scores
+## Overview
 
-## How to Use
+This project analyzes contract clauses using semantic search and retrieval-based reasoning.
 
-### Prerequisites
-Install required dependencies:
-```bash
-pip install -r requirements.txt
-```
+Instead of relying on keyword matching, the system converts contract clauses into vector embeddings and retrieves the most relevant legal clauses using cosine similarity. Risk assessments are generated using retrieved evidence, making every recommendation traceable and explainable.
 
-### Data Preparation
-1. Place your raw contract data in `data/raw/` directory as a parquet file named `cuad_labels.parquet`
-2. Run the chunking process:
-```bash
-python src/data_prep/chunk_contracts.py
-```
-
-### Embeddings Generation
-3. Generate embeddings for the chunks:
-```bash
-python src/embeddings/generate_embeddings.py
-```
-
-### Retrieval
-4. Query the system:
-```bash
-python src/retrieval/retrieve.py --query "What are the termination conditions?"
-```
+---
 
 ## Features
 
-- Semantic search using sentence transformers
-- Configurable chunk size and overlap for text splitting
-- Efficient cosine similarity computation
-- Detailed result information including contract ID, clause type, and similarity score
-- Deterministic chunk IDs for reproducible results
-- Command-line interface for easy querying
-- Gradio UI for interactive analysis
-- Structured output with risk level, confidence, evidence, and recommendations
+* Contract clause chunking pipeline
+* Semantic embeddings using all-MiniLM-L6-v2
+* Cosine similarity retrieval engine
+* Retrieval evaluation (Recall@1, Recall@3, Recall@5, MRR)
+* Retrieval-grounded risk analysis
+* Confidence scoring
+* Explainability and evidence reporting
+* Gradio web interface
+* Hugging Face deployment
 
-## File Structure
+---
 
-```
+## System Architecture
+
+Raw Contracts
+↓
+Contract Chunking
+↓
+Embedding Generation
+↓
+Vector Retrieval
+↓
+Risk Analysis Agent
+↓
+Explainability & Confidence Scoring
+↓
+Gradio Interface
+
+---
+
+## Project Results
+
+Dataset Statistics:
+
+* 1,387 contracts processed
+* 1,743 semantic chunks generated
+* 384-dimensional embeddings
+
+Retrieval Metrics:
+
+* Recall@1: 75.0%
+* Recall@3: 87.5%
+* Recall@5: 87.5%
+* MRR: 81.25%
+
+---
+
+## Tech Stack
+
+### AI / NLP
+
+* Sentence Transformers
+* all-MiniLM-L6-v2
+* Semantic Retrieval
+* Cosine Similarity Search
+
+### Backend
+
+* Python
+* NumPy
+* Pandas
+* Scikit-Learn
+
+### Data Processing
+
+* Parquet
+* LangChain Text Splitters
+
+### UI & Deployment
+
+* Gradio
+* Hugging Face Spaces
+
+---
+
+## Repository Structure
+
 contract-risk-agent/
-├── src/
-│   ├── data_prep/
-│   │   └── chunk_contracts.py
-│   ├── embeddings/
-│   │   └── generate_embeddings.py
-│   └── retrieval/
-│       └── retrieve.py
+
+├── src/data_prep/
+├── src/embeddings/
+├── src/retrieval/
+├── src/risk_analysis/
 ├── data/
-│   ├── raw/              # Raw contract data
-│   └── processed/        # Processed chunks, embeddings, and metadata
-├── app.py                # Gradio UI application
-├── requirements.txt      # Project dependencies
-└── README.md             # This file
-```
+├── app.py
+├── requirements.txt
+└── README.md
 
-## Dependencies
+---
 
-The project requires the following Python packages (listed in `requirements.txt`):
-- gradio
-- sentence-transformers
-- numpy
-- pandas
-- pyarrow
-- scikit-learn
-- langchain-text-splitters
+## Example Analysis Output
 
-## Model Information
+Input:
 
-The system uses the 'sentence-transformers/all-MiniLM-L6-v2' model for embedding generation, which provides a good balance between performance and accuracy for semantic similarity tasks.
+"Neither party may assign this agreement without prior written consent."
 
-## Output Format
+Output:
 
-When querying, the system returns:
-- Risk Level (Low, Medium, High)
-- Confidence Score (0-1)
-- Confidence Level (Low, Medium, High)
-- Detected Clause Types
-- Retrieval Statistics 
-- Evidence with similarity scores and chunk details
-- Recommendations based on detected clauses
+* Risk Level: MEDIUM
+* Confidence: 0.79
+* Clause Type: Anti-Assignment
+* Evidence: Retrieved similar clauses from CUAD dataset
+* Recommendation: Review assignment restrictions and consent requirements
 
-## Deployment for Hugging Face Spaces
+---
 
-This project is ready to be deployed on Hugging Face Spaces. For deployment instructions, see `README_HF.md`.
+## Future Improvements
+
+* Full online deployment with hosted embeddings
+* Hybrid search (BM25 + embeddings)
+* Cross-encoder reranking
+* PDF contract upload support
+* Multi-document contract comparison
+
+---
+
+## Author
+
+Harshith Reddy
+
+B.Tech CSE (AI)
+
+ICFAI Foundation for Higher Education
+
+Hyderabad, India
