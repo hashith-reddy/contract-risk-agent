@@ -1,0 +1,7 @@
+gradio
+sentence-transformers
+numpy
+pandas
+pyarrow
+scikit-learn
+langchain-text-splitters
