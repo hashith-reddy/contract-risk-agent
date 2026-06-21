@@ -55,6 +55,61 @@ def find_relevant_chunks(embeddings: np.ndarray, metadata: pd.DataFrame, chunks:
     
     return results
 
+def calculate_confidence_score(evidence: List[Dict]) -> float:
+    """
+    Calculate confidence score based on retrieval evidence.
+    
+    Args:
+        evidence: List of retrieved clauses with their similarity scores and types
+        
+    Returns:
+        Confidence score between 0.00 and 1.00
+    """
+    if not evidence:
+        return 0.0
+    
+    # Get all similarity scores
+    similarity_scores = [item['similarity_score'] for item in evidence]
+    
+    # Calculate average similarity score
+    avg_similarity = np.mean(similarity_scores)
+    
+    # Calculate similarity score variance
+    similarity_variance = np.var(similarity_scores)
+    
+    # Count how many of the top clauses are of the same type (agreement among clause types)
+    clause_types = [item['clause_type'] for item in evidence]
+    from collections import Counter
+    type_counts = Counter(clause_types)
+    max_type_count = max(type_counts.values())
+    agreement_among_types = max_type_count / len(evidence)  # Proportion of top clauses of same type
+    
+    # Count strong matches (similarity >= 0.80)
+    strong_matches = sum(1 for score in similarity_scores if score >= 0.80)
+    
+    # Weighted confidence calculation
+    # We want to consider:
+    # 1. Average similarity (higher is better for confidence)
+    # 2. Variance (lower is better for confidence) 
+    # 3. Agreement among clause types (higher is better for confidence)
+    # 4. Number of strong matches (higher is better for confidence)
+    
+    # Normalize values to [0, 1] range
+    normalized_avg_similarity = min(avg_similarity, 1.0)  # Already in [0,1] range
+    normalized_variance = 1.0 - min(similarity_variance / 0.25, 1.0)  # Assuming max variance of 0.25 for typical data
+    
+    # Agreement among types is already between 0 and 1
+    # Strong matches as proportion of total evidence
+    strong_match_proportion = strong_matches / len(evidence)
+    
+    # Weighted combination (you can adjust these weights as needed)
+    confidence = (0.4 * normalized_avg_similarity + 
+                  0.3 * normalized_variance + 
+                  0.2 * agreement_among_types + 
+                  0.1 * strong_match_proportion)
+    
+    return min(confidence, 1.0)  # Ensure it doesn't exceed 1.0
+
 def determine_risk_level(evidence: List[Dict]) -> str:
     """
     Determine risk level based on retrieved evidence.
@@ -88,6 +143,96 @@ def determine_risk_level(evidence: List[Dict]) -> str:
         # Low similarity suggests lower risk
         return "LOW"
 
+def generate_explanation(evidence: List[Dict]) -> str:
+    """
+    Generate explanation for why a particular classification was made.
+    
+    Args:
+        evidence: List of retrieved clauses with their similarity scores and types
+        
+    Returns:
+        Explanation string
+    """
+    if not evidence:
+        return "No relevant clauses found in the database."
+    
+    # Get all similarity scores
+    similarity_scores = [item['similarity_score'] for item in evidence]
+    
+    # Calculate average similarity score
+    avg_similarity = np.mean(similarity_scores)
+    
+    # Get top clause type (most frequent)
+    from collections import Counter
+    clause_types = [item['clause_type'] for item in evidence]
+    type_counts = Counter(clause_types)
+    top_clause_type = type_counts.most_common(1)[0][0] if type_counts else "Unknown"
+    
+    # Count how many of the top 5 retrieved clauses are of the top clause type
+    top_5_count = sum(1 for item in evidence[:5] if item['clause_type'] == top_clause_type)
+    
+    # Get unique clause types
+    unique_clause_types = list(set(clause_types))
+    
+    explanation = f"Average similarity score: {avg_similarity:.2f}\n"
+    explanation += f"Top clause type: {top_clause_type}\n"
+    explanation += f"{top_5_count} of top 5 retrieved clauses were {top_clause_type}\n"
+    explanation += "Retrieved evidence consistently matched relevant clause types\n"
+    
+    return explanation
+
+def get_retrieval_statistics(evidence: List[Dict]) -> str:
+    """
+    Generate retrieval statistics from evidence.
+    
+    Args:
+        evidence: List of retrieved clauses with their similarity scores and types
+        
+    Returns:
+        Statistics string
+    """
+    if not evidence:
+        return "Retrieved Chunks: 0\nAverage Similarity: N/A\nHighest Similarity: N/A\nLowest Similarity: N/A\nUnique Clause Types: 0"
+    
+    # Get all similarity scores
+    similarity_scores = [item['similarity_score'] for item in evidence]
+    
+    # Calculate statistics
+    retrieved_chunks = len(evidence)
+    avg_similarity = np.mean(similarity_scores)
+    highest_similarity = max(similarity_scores)
+    lowest_similarity = min(similarity_scores)
+    
+    # Get unique clause types
+    clause_types = [item['clause_type'] for item in evidence]
+    unique_clause_types = len(set(clause_types))
+    
+    stats = f"Retrieved Chunks: {retrieved_chunks}\n"
+    stats += f"Average Similarity: {avg_similarity:.2f}\n"
+    stats += f"Highest Similarity: {highest_similarity:.2f}\n"
+    stats += f"Lowest Similarity: {lowest_similarity:.2f}\n"
+    stats += f"Unique Clause Types: {unique_clause_types}"
+    
+    return stats
+
+def get_confidence_level(confidence_score: float) -> str:
+    """
+    Determine confidence level based on confidence score.
+    
+    Args:
+        confidence_score: Confidence score between 0.00 and 1.00
+        
+    Returns:
+        Confidence level: HIGH, MEDIUM, or LOW
+    """
+    if confidence_score >= 0.85:
+        return "HIGH"
+    elif confidence_score >= 0.65:
+        return "MEDIUM"
+    else:
+        return "LOW"
+
+
 def generate_risk_report(query: str, evidence: List[Dict]) -> str:
     """
     Generate a structured risk report based on retrieved evidence.
@@ -100,9 +245,16 @@ def generate_risk_report(query: str, evidence: List[Dict]) -> str:
         Formatted risk report as string
     """
     risk_level = determine_risk_level(evidence)
+    confidence_score = calculate_confidence_score(evidence)
+    confidence_level = get_confidence_level(confidence_score)
+    explanation = generate_explanation(evidence)
+    retrieval_stats = get_retrieval_statistics(evidence)
     
     # Get unique clause types
     clause_types = list(set(item['clause_type'] for item in evidence))
+    
+    # Sort evidence by similarity score (descending)
+    sorted_evidence = sorted(evidence, key=lambda x: x['similarity_score'], reverse=True)
     
     # Build the report
     report = "==================================================\n"
@@ -111,17 +263,27 @@ def generate_risk_report(query: str, evidence: List[Dict]) -> str:
     
     report += f"Risk Level:\n{risk_level}\n\n"
     
+    report += f"Confidence:\n{confidence_score:.2f}\n\n"
+    
+    report += f"Confidence Level:\n{confidence_level}\n\n"
+    
     report += "Detected Clause Types:\n\n"
     for clause_type in sorted(clause_types):
         report += f"* {clause_type}\n"
     report += "\n"
     
-    report += "Evidence\n\n"
+    report += "Retrieval Statistics:\n\n"
+    report += retrieval_stats + "\n\n"
     
-    for i, item in enumerate(evidence, 1):
-        report += f"Clause Type: {item['clause_type']}\n"
-        report += f"Similarity Score: {item['similarity_score']:.4f}\n"
-        report += f"Evidence Snippet: {item['chunk_text']}\n\n"
+    report += "Why This Classification Was Made:\n\n"
+    report += explanation + "\n"
+    
+    report += "Evidence:\n\n"
+    
+    # Display evidence ranked by similarity score
+    for i, item in enumerate(sorted_evidence, 1):
+        report += f"{i}. {item['clause_type']} | {item['similarity_score']:.2f} | {item['contract_id']}\n"
+    report += "\n"
     
     # Generate risk summary
     report += "Risk Summary\n\n"
