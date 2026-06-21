@@ -1,149 +1,261 @@
-# Contract Risk Analysis Agent
+# ⚖️ Contract Risk Analysis Agent
 
-Retrieval-grounded legal contract risk analysis system built using the CUAD (Contract Understanding Atticus Dataset), semantic embeddings, cosine similarity retrieval, explainability, and confidence scoring.
+A retrieval-grounded legal AI system that analyzes contract clauses using semantic search, vector embeddings, explainable risk assessment, and evidence-based reasoning.
 
-## Live Demo
+Built using the CUAD (Contract Understanding Atticus Dataset), Sentence Transformers, and Gradio, this project demonstrates an end-to-end AI pipeline from contract preprocessing to deployment.
 
-Hugging Face Space:
+---
+
+## 🚀 Live Demo
+
+**Hugging Face Deployment**
+
 https://harshithh-contract-risk-agent.hf.space
 
-GitHub Repository:
+**GitHub Repository**
+
 https://github.com/hashith-reddy/contract-risk-agent
 
 ---
 
-## Overview
+## 📌 Project Overview
 
-This project analyzes contract clauses using semantic search and retrieval-based reasoning.
+Contract review is a time-consuming process that requires identifying critical legal clauses such as:
 
-Instead of relying on keyword matching, the system converts contract clauses into vector embeddings and retrieves the most relevant legal clauses using cosine similarity. Risk assessments are generated using retrieved evidence, making every recommendation traceable and explainable.
+* Anti-Assignment
+* Change of Control
+* Cap on Liability
+* Uncapped Liability
+* Renewal Terms
+* Non-Compete
+* Termination for Convenience
+* Most Favored Nation
 
----
+This system uses semantic retrieval instead of simple keyword matching to identify relevant clauses and generate explainable risk assessments supported by retrieved evidence.
 
-## Features
-
-* Contract clause chunking pipeline
-* Semantic embeddings using all-MiniLM-L6-v2
-* Cosine similarity retrieval engine
-* Retrieval evaluation (Recall@1, Recall@3, Recall@5, MRR)
-* Retrieval-grounded risk analysis
-* Confidence scoring
-* Explainability and evidence reporting
-* Gradio web interface
-* Hugging Face deployment
+Every recommendation produced by the system is traceable to actual contract clauses retrieved from the CUAD dataset.
 
 ---
 
-## System Architecture
+## 🏗 System Architecture
 
-Raw Contracts
-↓
-Contract Chunking
-↓
+```text
+Raw Contract Data
+        │
+        ▼
+Contract Processing
+        │
+        ▼
+Text Chunking
+        │
+        ▼
 Embedding Generation
-↓
-Vector Retrieval
-↓
+        │
+        ▼
+Vector Retrieval Engine
+        │
+        ▼
 Risk Analysis Agent
-↓
-Explainability & Confidence Scoring
-↓
-Gradio Interface
+        │
+        ▼
+Explainability Layer
+        │
+        ▼
+Gradio User Interface
+```
 
 ---
 
-## Project Results
+## ✨ Key Features
 
-Dataset Statistics:
+### Semantic Contract Search
 
-* 1,387 contracts processed
-* 1,743 semantic chunks generated
-* 384-dimensional embeddings
+* Sentence Transformer embeddings
+* Cosine similarity retrieval
+* Top-K clause ranking
+* Retrieval-grounded reasoning
 
-Retrieval Metrics:
+### Risk Analysis
 
-* Recall@1: 75.0%
-* Recall@3: 87.5%
-* Recall@5: 87.5%
-* MRR: 81.25%
+* Risk classification
+* Confidence scoring
+* Evidence-backed recommendations
+* Clause type detection
+
+### Explainability
+
+* Similarity score reporting
+* Evidence ranking
+* Retrieval statistics
+* Classification rationale
+
+### Evaluation
+
+* Recall@1
+* Recall@3
+* Recall@5
+* Mean Reciprocal Rank (MRR)
+
+### Deployment
+
+* Gradio web application
+* Hugging Face Spaces deployment
+* Public demo access
 
 ---
 
-## Tech Stack
+## 📊 Dataset & Results
 
-### AI / NLP
+### Dataset
+
+**CUAD (Contract Understanding Atticus Dataset)**
+
+Processing Results:
+
+| Metric              | Value            |
+| ------------------- | ---------------- |
+| Contracts Processed | 1,387            |
+| Chunks Generated    | 1,743            |
+| Embedding Dimension | 384              |
+| Embedding Model     | all-MiniLM-L6-v2 |
+
+### Retrieval Performance
+
+| Metric   | Score  |
+| -------- | ------ |
+| Recall@1 | 75.0%  |
+| Recall@3 | 87.5%  |
+| Recall@5 | 87.5%  |
+| MRR      | 81.25% |
+
+---
+
+## 🧠 Technology Stack
+
+### AI / Machine Learning
 
 * Sentence Transformers
 * all-MiniLM-L6-v2
 * Semantic Retrieval
-* Cosine Similarity Search
+* Vector Search
+* Cosine Similarity
 
-### Backend
+### Data Engineering
 
-* Python
-* NumPy
 * Pandas
-* Scikit-Learn
-
-### Data Processing
-
+* NumPy
+* PyArrow
 * Parquet
-* LangChain Text Splitters
 
-### UI & Deployment
+### NLP Processing
+
+* LangChain Text Splitters
+* Recursive Character Chunking
+
+### User Interface
 
 * Gradio
+
+### Deployment
+
 * Hugging Face Spaces
+* GitHub
 
 ---
 
-## Repository Structure
+## 📂 Repository Structure
 
+```text
 contract-risk-agent/
-
-├── src/data_prep/
-├── src/embeddings/
-├── src/retrieval/
-├── src/risk_analysis/
+│
+├── src/
+│   ├── data_prep/
+│   │   └── chunk_contracts.py
+│   │
+│   ├── embeddings/
+│   │   └── generate_embeddings.py
+│   │
+│   ├── retrieval/
+│   │   └── retrieve.py
+│   │
+│   └── risk_analysis/
+│       └── analyze_contract.py
+│
 ├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── eval/
+│   └── evaluate_retrieval.py
+│
 ├── app.py
 ├── requirements.txt
 └── README.md
+```
 
 ---
 
-## Example Analysis Output
+## 🔍 Example Analysis
 
-Input:
+### Input
 
-"Neither party may assign this agreement without prior written consent."
+```text
+Neither party may assign this agreement without prior written consent.
+```
 
-Output:
+### Output
 
-* Risk Level: MEDIUM
-* Confidence: 0.79
-* Clause Type: Anti-Assignment
-* Evidence: Retrieved similar clauses from CUAD dataset
-* Recommendation: Review assignment restrictions and consent requirements
+```text
+Risk Level: MEDIUM
+Confidence: 0.79
+Clause Type: Anti-Assignment
 
----
+Evidence:
+5 of top 5 retrieved clauses matched Anti-Assignment clauses.
 
-## Future Improvements
-
-* Full online deployment with hosted embeddings
-* Hybrid search (BM25 + embeddings)
-* Cross-encoder reranking
-* PDF contract upload support
-* Multi-document contract comparison
+Recommendation:
+Review assignment restrictions and ensure appropriate consent procedures are documented.
+```
 
 ---
 
-## Author
+## 📈 Development Milestones
 
-Harshith Reddy
+* Phase 1 – CUAD Data Processing
+* Phase 2 – Contract Chunking Pipeline
+* Phase 3 – Embedding Generation
+* Phase 4 – Semantic Retrieval Engine
+* Phase 5 – Retrieval Evaluation
+* Phase 6 – Risk Analysis Agent
+* Phase 7 – Explainability & Confidence Scoring
+* Phase 8 – Gradio User Interface
+* Phase 9 – Deployment & Hugging Face Integration
 
-B.Tech CSE (AI)
+---
 
-ICFAI Foundation for Higher Education
+## 🔮 Future Improvements
+
+* Hybrid Retrieval (BM25 + Embeddings)
+* Cross-Encoder Reranking
+* PDF Contract Upload Support
+* Multi-Contract Comparison
+* Clause Highlighting
+* Legal Knowledge Graph Integration
+
+---
+
+## 👨‍💻 Author
+
+**Harshith Reddy**
+
+B.Tech Computer Science & Engineering (AI)
+
+ICFAI Foundation for Higher Education (IFHE)
 
 Hyderabad, India
+
+---
+
+## 📜 License
+
+MIT License
