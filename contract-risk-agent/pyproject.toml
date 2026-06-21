@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contract-risk-agent"
+version = "0.1.0"
+description = "A RAG-based legal contract risk analysis tool with built-in evaluation framework"
+authors = [
+    {name = "Contract Risk Agent Team"},
+]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "anthropic",
+    "sentence-transformers",
+    "chromadb",
+    "pandas",
+    "pdfplumber",
+    "python-dotenv",
+    "pytest",
+    "rich",
+    "rapidfuzz",
+    "streamlit",
+    "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+]
+
+[project.scripts]
+contract-risk-agent = "src.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

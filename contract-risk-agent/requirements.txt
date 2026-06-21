@@ -1,0 +1,11 @@
+anthropic
+sentence-transformers
+chromadb
+pandas
+pdfplumber
+python-dotenv
+pytest
+rich
+rapidfuzz
+streamlit
+pydantic
